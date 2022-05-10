@@ -13,7 +13,8 @@ document.body.appendChild(component('textarea', '', 'textarea'));
 
 const inputText = document.querySelector('.textarea');
 let isInput = false;
-inputText.onclick = function isInp() { isInput = true; };
+inputText.addEventListener('click', () => { isInput = true; });
+document.addEventListener('mousedown', () => { isInput = false; });
 
 document.body.appendChild(component('div', '', 'keyboard'));
 document.body.appendChild(component('div', 'Switch language: leftCtrl + leftShift', 'text'));
@@ -55,15 +56,16 @@ document.addEventListener('keydown', (KeyboardEvent) => {
   switch (tempKey) {
     case 'Tab':
       textarea.push('\t');
-      if (isInput === false) inputText.value = textarea.join('');
+      if (isInput === false) inputText.value += '\t';
       break;
     case 'Enter':
-      textarea.push('\n\r');
-      if (isInput === false) inputText.value = textarea.join('');
+      textarea.push('\n');
+      if (isInput === false) inputText.value += '\n';
       break;
     case 'Backspace':
-      textarea.pop();
-      if (isInput === false) inputText.value = textarea.join('');
+      if (isInput === false) textarea.pop();
+      if (isInput === true) textarea = inputText.value.split('');
+      inputText.value = textarea.join('');
       break;
     case 'Delete':
       textarea = inputText.value.split('');
@@ -77,8 +79,8 @@ document.addEventListener('keydown', (KeyboardEvent) => {
       break;
   }
   if (outArr.includes(tempKey) !== true) {
-    if (isInput === false) inputText.value += tempKey;
     if (!['▲', '◄', '▼', '◄'].includes(tempKey)) textarea.push(tempKey);
+    if (isInput === false) inputText.value = textarea.join('');
   }
 });
 
@@ -87,7 +89,6 @@ document.addEventListener('keyup', (KeyboardEvent) => {
 });
 
 function mouseEventKey() {
-  isInput = false;
   const code = this.dataset.name;
   this.classList.add('active');
 
@@ -153,8 +154,8 @@ function mouseEventKey() {
       break;
   }
   if (outArr.includes(tempKey) !== true) {
-    inputText.value = textarea.join('');
     textarea.push(tempKey);
+    inputText.value = textarea.join('');
   }
 }
 
@@ -232,7 +233,7 @@ function getLocalStorage() {
   if (localStorage.getItem('globalLang')) {
     const globalLang = localStorage.getItem('globalLang');
     lang = globalLang;
-    getTranslate();
+    getTranslate(globalLang);
   }
 }
 window.addEventListener('load', getLocalStorage);
