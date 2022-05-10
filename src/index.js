@@ -8,7 +8,7 @@ function component(type, inner, addClass) {
   return element;
 }
 
-document.body.appendChild(component('h1', 'Virtual keyboard', 'hello'));
+document.body.npappendChild(component('h1', 'Virtual keyboard', 'hello'));
 document.body.appendChild(component('textarea', '', 'textarea'));
 
 const inputText = document.querySelector('.textarea');
