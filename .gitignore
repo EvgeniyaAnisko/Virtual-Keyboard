@@ -1,0 +1,9 @@
+node_modules
+bash.exe.stackdump
+dist/index.html
+.gitignore
+dist/main.css
+dist/service-worker.js
+dist/workbox-7d6a3f4d.js
+dist/main.js
+dist/
